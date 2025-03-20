@@ -12,11 +12,11 @@ const MOVEMENT_SPEED = 5;
 
 // Function to generate the grid of squares
 const generateGrid = (width: number, height: number, size: number) => {
-  const grid = [];
+  const grid: { x: number; y: number; dy: number }[] = [];
   for (let x = size; x < width - size; x += 2 * size) {
     for (let y = size; y < height - size; y += 2 * size) {
       if (Math.random() < 0.3) {
-        grid.push({ x, y });
+        grid.push({ x, y, dy: Math.random() > 0.5 ? 1 : -1 }); // Random vertical direction
       }
     }
   }
@@ -68,7 +68,18 @@ export default function Home() {
       ctx.fill();
     };
 
+    const updateSquares = () => {
+      gridRef.current.forEach((square) => {
+        square.y += square.dy * 2; // Adjust speed as needed
+        // Reverse direction when hitting top or bottom
+        if (square.y + SQUARE_SIZE / 2 > CANVAS_HEIGHT || square.y - SQUARE_SIZE / 2 < 0) {
+          square.dy *= -1;
+        }
+      });
+    };
+
     const gameLoop = () => {
+      updateSquares(); // Update square positions
       drawCircle();
       animationFrameId = requestAnimationFrame(gameLoop);
     };
@@ -108,7 +119,10 @@ export default function Home() {
         const dx = newX - square.x;
         const dy = newY - square.y;
         const combinedHalfWidths = SQUARE_SIZE / 2 + CIRCLE_RADIUS;
-        if (Math.abs(dx) < combinedHalfWidths && Math.abs(dy) < combinedHalfWidths) {
+        if (
+          Math.abs(dx) < combinedHalfWidths &&
+          Math.abs(dy) < combinedHalfWidths
+        ) {
           collision = true;
           break;
         }
