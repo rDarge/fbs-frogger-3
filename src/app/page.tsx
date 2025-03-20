@@ -144,6 +144,10 @@ export default function Home() {
       if (!collision) {
         circleRef.current.x = newX;
         circleRef.current.y = newY;
+      } else {
+        // Reset circle position on collision
+        circleRef.current.x = CIRCLE_RADIUS;
+        circleRef.current.y = CANVAS_HEIGHT / 2;
       }
     };
 
