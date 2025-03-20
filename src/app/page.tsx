@@ -13,7 +13,7 @@ const MOVEMENT_SPEED = 5;
 // Function to generate the grid of squares
 const generateGrid = (width: number, height: number, size: number) => {
   const grid: { x: number; y: number; dy: number }[] = [];
-  for (let x = size; x < width - size; x += 2 * size) {
+  for (let x = 3 * size; x < width - size; x += 2 * size) { // Start from 3 * size
     for (let y = size; y < height - size; y += 2 * size) {
       if (Math.random() < 0.3) {
         grid.push({ x, y, dy: Math.random() > 0.5 ? 1 : -1 }); // Random vertical direction
@@ -26,7 +26,7 @@ const generateGrid = (width: number, height: number, size: number) => {
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const circleRef = useRef({
-    x: CANVAS_WIDTH / 2,
+    x: CIRCLE_RADIUS, // Start at left edge
     y: CANVAS_HEIGHT / 2,
   });
 
