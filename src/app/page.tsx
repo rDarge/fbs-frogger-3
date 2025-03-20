@@ -15,7 +15,9 @@ const generateGrid = (width: number, height: number, size: number) => {
   const grid = [];
   for (let x = size; x < width - size; x += 2 * size) {
     for (let y = size; y < height - size; y += 2 * size) {
-      grid.push({ x, y });
+      if (Math.random() < 0.3) {
+        grid.push({ x, y });
+      }
     }
   }
   return grid;
