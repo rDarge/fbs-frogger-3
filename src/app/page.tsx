@@ -83,7 +83,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-screen bg-green-500">
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}
