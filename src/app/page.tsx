@@ -2,18 +2,22 @@
 
 import React, { useRef, useEffect } from "react";
 
-const CANVAS_WIDTH = 800;
+const CANVAS_WIDTH = 880; // Adjusted width to accommodate blue column
 const CANVAS_HEIGHT = 600;
 const CIRCLE_RADIUS = 20;
 const CIRCLE_COLOR = "#FFFF00"; // Yellow
 const SQUARE_SIZE = 40; // Size of the square obstacles
 const SQUARE_COLOR = "#FF0000"; // Red
 const MOVEMENT_SPEED = 5;
+const BLUE_COLUMN_COLOR = "#0000FF"; // Blue
+const BLUE_COLUMN_WIDTH = SQUARE_SIZE;
 
-// Function to generate the grid of squares
+// Function to generate the grid of squares with blue column on the right
 const generateGrid = (width: number, height: number, size: number) => {
   const grid: { x: number; y: number; dy: number }[] = [];
-  for (let x = 3 * size; x < width - size; x += 2 * size) { // Start from 3 * size
+  const gridWidth = width - BLUE_COLUMN_WIDTH; // Width available for grid
+
+  for (let x = 3 * size; x < gridWidth - size; x += 2 * size) { // Adjusted condition
     for (let y = size; y < height - size; y += 2 * size) {
       if (Math.random() < 0.3) {
         grid.push({ x, y, dy: Math.random() > 0.5 ? 1 : -1 }); // Random vertical direction
@@ -55,6 +59,15 @@ export default function Home() {
           SQUARE_SIZE
         );
       });
+
+      // Draw the blue column on the right
+      ctx.fillStyle = BLUE_COLUMN_COLOR;
+      ctx.fillRect(
+        CANVAS_WIDTH - BLUE_COLUMN_WIDTH, // Start from the right edge
+        0,
+        BLUE_COLUMN_WIDTH,
+        CANVAS_HEIGHT
+      );
 
       ctx.beginPath();
       ctx.arc(
@@ -106,7 +119,7 @@ export default function Home() {
       // Prevent circle from going off-screen
       newX = Math.max(
         CIRCLE_RADIUS,
-        Math.min(newX, CANVAS_WIDTH - CIRCLE_RADIUS)
+        Math.min(newX, CANVAS_WIDTH - CIRCLE_RADIUS - BLUE_COLUMN_WIDTH) // Adjusted boundary
       );
       newY = Math.max(
         CIRCLE_RADIUS,
