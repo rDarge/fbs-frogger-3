@@ -62,9 +62,21 @@ export default function Home() {
   const gridRef = useRef<Square[]>(generateGrid(CANVAS_WIDTH, CANVAS_HEIGHT, SQUARE_SIZE));
   const [showAlert, setShowAlert] = useState(false);
   const alertTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [canvasBgColor, setCanvasBgColor] = useState('hsl(120, 60%, 50%)'); // Default to theme green
 
   const SQUARE_SPEED = 2; // Speed of red squares
   const SQUARE_DISAPPEAR_DURATION = 3000; // 3 seconds
+
+  useEffect(() => {
+    // Fetch the actual background color from CSS variables
+    if (typeof window !== "undefined") {
+      const computedStyle = getComputedStyle(document.documentElement);
+      const themeBg = computedStyle.getPropertyValue('--background').trim();
+      if (themeBg) {
+        setCanvasBgColor(`hsl(${themeBg})`);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -79,9 +91,8 @@ export default function Home() {
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
       // Draw the background
-      ctx.fillStyle = 'hsl(var(--background))'; // Use theme background color
+      ctx.fillStyle = canvasBgColor; 
       ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
 
       // Draw the squares
       gridRef.current.forEach((square) => {
@@ -223,14 +234,14 @@ export default function Home() {
         clearTimeout(alertTimeoutRef.current);
       }
     };
-  }, [showAlert]); // Add showAlert to dependencies to re-evaluate if needed, though not strictly necessary for listeners
+  }, [showAlert, canvasBgColor]); // Add canvasBgColor to dependencies
 
   const handleAlertClose = () => {
     setShowAlert(false);
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-green-500">
+    <div className="flex items-center justify-center h-screen"> {/* Removed bg-green-500 to use theme background */}
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}
