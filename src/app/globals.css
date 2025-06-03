@@ -9,8 +9,8 @@ body {
 
 @layer base {
   :root {
-    --background: 120 100% 85%; /* Light green */
-    --foreground: 0 0% 3.9%;
+    --background: 120 40% 40%; /* Forest Green for light theme */
+    --foreground: 0 0% 98%; /* Adjusted for better contrast on forest green */
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
@@ -45,7 +45,7 @@ body {
   }
 
   .dark {
-    --background: 120 20% 10%;
+    --background: 120 30% 15%; /* Dark Forest Green for dark theme */
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
